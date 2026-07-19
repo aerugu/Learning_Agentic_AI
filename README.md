@@ -49,6 +49,8 @@ The UI maps those concepts into a practical manager console:
 
 ## Technology Stack
 
+This repository currently implements the application shell and demo workflow:
+
 - React `19`
 - Next-compatible `vinext`
 - TypeScript
@@ -57,6 +59,22 @@ The UI maps those concepts into a practical manager console:
 - Docker and Docker Compose
 - Node.js test runner
 - ESLint
+
+## Target Oracle AI Stack Mapping
+
+The screenshots that inspired this project show generic AI stack layers. For this Oracle Fusion HCM Learning compliance use case, those generic layers map to Oracle enterprise services as follows.
+
+| Generic stack layer | Generic tools from the AI stack diagram | Oracle Fusion HCM use case mapping |
+| --- | --- | --- |
+| LLMs | Claude, OpenAI, Gemini, Cohere, Llama, Mistral | Same model families, consumed through Oracle AI Agent Studio multi-LLM support and routed via an OCI-fronted AI Gateway. Example routing: Anthropic Claude for the Supervisor, Cohere Command for the HCM Data Agent, GPT-4o for the Course Recommender, and Llama 3 or Gemini as failover models. |
+| Vector database | Pinecone, Weaviate, Milvus, Qdrant, Chroma, pgvector | Oracle Database 23ai AI Vector Search. This is the vector store behind Agent Studio's Document Tool. Policy PDF and learning catalog embeddings live in Oracle's converged database and are indexed by the ESS "Process Agent Documents" job. |
+| Text embeddings | OpenAI, Cohere, Nomic, SBERT, Voyage | Cohere Embed through OCI Generative AI. The Oracle Document Tool calls this managed embedding endpoint during ingestion. OCI can support other embedding models, but Cohere is the default enterprise mapping for this design. |
+| Data extraction | LlamaParse, Firecrawl, Docling, Crawl4AI | Native Document Tool ingestion for policy PDFs, plus HCM REST APIs and Business Object Tool for governed structured extraction. This design avoids scraping. OCI Document Understanding is the Oracle option for OCR on scanned compliance certificates. |
+| Open LLM access | Hugging Face, Groq, Ollama, together.ai | OCI Generative AI service for managed open model access, including Meta Llama on dedicated inference clusters. This replaces local Ollama-style self-hosting for the enterprise deployment path. |
+| Framework | LangChain, LlamaIndex, Haystack, txtai | Oracle AI Agent Studio. Agent Teams, Supervisor and Utility agents, Tools, Topics, memory, and orchestration provide the platform-native equivalent of open-source agent frameworks. MCP and A2A provide interoperability. |
+| Evaluation | Ragas, Giskard, TruLens | Agent Studio's built-in evaluation framework: golden datasets, LLM-judge scoring, accuracy and faithfulness checks, A/B prompt comparison, and Prompt Playground. These evaluations should be wired into the deployment gate. |
+
+This codebase does not call those Oracle services yet. The current implementation is a runnable React reference UI with seeded data. The table above documents the intended enterprise architecture to connect behind this UI.
 
 ## Project Structure
 
