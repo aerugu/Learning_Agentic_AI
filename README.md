@@ -91,6 +91,7 @@ Runtime entry points:
 - `backend/agentic/config.py`: runtime mode and Oracle/OCI environment configuration.
 - `docs/oracle-agentic-runtime.md`: detailed runtime design and live-service environment contract.
 - `docs/agent-runs/`: timestamped agent execution runbook logs showing prompt, output, human decision, artifact, and validation command for each agent step.
+- `docs/REQUIREMENTS_TRACEABILITY_MATRIX.md`: requirement-to-code/test/automation/documentation traceability matrix.
 
 Default mode is `mock`, which keeps the application runnable without OCI credentials. The provider boundaries are named and shaped for the requested Oracle stack:
 
