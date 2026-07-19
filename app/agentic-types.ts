@@ -1,18 +1,10 @@
-import type { CourseRecommendation, LearnerRecord, QueryTemplate } from "../data";
-
-export type AgentRuntimeMode = "mock" | "oci";
-
-export type AgenticQueryRequest = {
-  query: string;
-  templateId: string;
-  managerEmail: string;
-};
+import type { CourseRecommendation, LearnerRecord, QueryTemplate } from "./data";
 
 export type AgenticQueryResult = {
   query: string;
   template: QueryTemplate;
   generatedAt: string;
-  runtimeMode: AgentRuntimeMode;
+  runtimeMode: "mock" | "oci";
   supervisorModel: string;
   embeddingModel: string;
   cacheStatus: "hit" | "miss" | "bypass";
@@ -40,16 +32,4 @@ export type AgentEvaluation = {
   answerRelevance: number;
   citationCoverage: number;
   deploymentGate: "pass" | "review" | "fail";
-};
-
-export type EmbeddingResult = {
-  model: string;
-  dimensions: number;
-  values: number[];
-};
-
-export type VectorSearchResult = {
-  courseId: string;
-  score: number;
-  reason: string;
 };

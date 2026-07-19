@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
-import { runAgenticComplianceQuery } from "../../agentic/runtime";
-import type { AgenticQueryRequest } from "../../agentic/types";
+
+type AgenticQueryRequest = {
+  query: string;
+  templateId: string;
+  managerEmail: string;
+};
+
+const PYTHON_BACKEND_URL =
+  process.env.PYTHON_AGENTIC_BACKEND_URL ?? "http://localhost:8000";
 
 export async function POST(request: Request) {
   const body = (await request.json()) as Partial<AgenticQueryRequest>;
@@ -14,11 +21,17 @@ export async function POST(request: Request) {
     );
   }
 
-  const result = await runAgenticComplianceQuery({
-    query: body.query,
-    templateId: body.templateId,
-    managerEmail: body.managerEmail,
+  const response = await fetch(`${PYTHON_BACKEND_URL}/agentic-query`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      query: body.query,
+      templateId: body.templateId,
+      managerEmail: body.managerEmail,
+    }),
   });
 
-  return NextResponse.json(result);
+  const result = await response.json();
+
+  return NextResponse.json(result, { status: response.status });
 }

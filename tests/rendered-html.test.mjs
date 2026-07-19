@@ -47,41 +47,13 @@ test("server-renders the manager compliance console", async () => {
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
 
-test("agentic query API returns Oracle and Cohere runtime metadata", async () => {
-  const response = await fetchWorker("/api/agentic-query", {
-    method: "POST",
-    headers: {
-      accept: "application/json",
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({
-      query: "Show overdue learners with escalation risk and policy citations.",
-      templateId: "high-risk",
-      managerEmail: "asha.mehta@example.com",
-    }),
-  });
-
-  assert.equal(response.status, 200);
-  const body = await response.json();
-
-  assert.equal(body.runtimeMode, "mock");
-  assert.equal(body.supervisorModel, "cohere.command-r-plus");
-  assert.equal(body.embeddingModel, "cohere.embed-english-v3.0");
-  assert.equal(body.cacheStatus, "miss");
-  assert.match(body.summary, /high-risk records/i);
-  assert.ok(body.records.length >= 2);
-  assert.ok(body.recommendations.length >= 1);
-  assert.equal(body.evaluation.framework, "Agent Studio built-in evaluation framework");
-  assert.equal(body.evaluation.deploymentGate, "pass");
-  assert.match(JSON.stringify(body.trace), /Oracle Database 23ai AI Vector Search/);
-});
-
 test("keeps agentic runtime files and starter cleanup aligned", async () => {
-  const [page, data, runtime, providers, layout, packageJson] = await Promise.all([
+  const [page, data, route, pythonRuntime, pythonProviders, layout, packageJson] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/data.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/agentic/runtime.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/agentic/providers.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/agentic-query/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../backend/agentic/runtime.py", import.meta.url), "utf8"),
+    readFile(new URL("../backend/agentic/providers.py", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
@@ -92,11 +64,13 @@ test("keeps agentic runtime files and starter cleanup aligned", async () => {
   assert.match(data, /queryTemplates/);
   assert.match(data, /learnerRecords/);
   assert.match(data, /CourseRecommendation/);
-  assert.match(runtime, /runAgenticComplianceQuery/);
-  assert.match(runtime, /Oracle AI Agent Studio/);
-  assert.match(providers, /OracleCoherenceCache/);
-  assert.match(providers, /OciCohereEmbeddingClient/);
-  assert.match(providers, /Oracle23AiVectorSearchClient/);
+  assert.match(route, /PYTHON_AGENTIC_BACKEND_URL/);
+  assert.match(route, /agentic-query/);
+  assert.match(pythonRuntime, /run_agentic_compliance_query/);
+  assert.match(pythonRuntime, /Oracle AI Agent Studio/);
+  assert.match(pythonProviders, /OracleCoherenceCache/);
+  assert.match(pythonProviders, /OciCohereEmbeddingClient/);
+  assert.match(pythonProviders, /Oracle23AiVectorSearchClient/);
   assert.match(layout, /Oracle Fusion Learning Compliance Manager/);
   assert.match(packageJson, /oracle-fusion-learning-agentic-ai/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);

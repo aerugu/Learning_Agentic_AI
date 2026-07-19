@@ -53,11 +53,13 @@ This repository currently implements the application shell and demo workflow:
 
 - React `19`
 - Next-compatible `vinext`
-- TypeScript
+- TypeScript for the React UI and thin API proxy
+- Python `3.12` for the agentic AI backend
 - Tailwind CSS entrypoint with custom CSS
 - Cloudflare/Vite-compatible build shape
 - Docker and Docker Compose
 - Node.js test runner
+- Python `unittest`
 - ESLint
 
 ## Target Oracle AI Stack Mapping
@@ -78,14 +80,15 @@ This codebase does not call those Oracle services yet. The current implementatio
 
 ## Agentic Runtime Implementation
 
-The project has been rebuilt so the React UI calls a server-side agentic runtime instead of doing all query logic in the browser.
+The project has been rebuilt so the React UI calls a Python server-side agentic runtime instead of doing query logic in the browser or TypeScript.
 
 Runtime entry points:
 
-- `app/api/agentic-query/route.ts`: API route called by the React manager UI.
-- `app/agentic/runtime.ts`: supervisor workflow, record filtering, vector retrieval, summary, trace, and evaluation orchestration.
-- `app/agentic/providers.ts`: provider boundaries for Oracle Coherence, Cohere Embed v3, Oracle Database 23ai Vector Search, Cohere Command R+, Oracle AI Agent Studio, and Agent Studio evaluations.
-- `app/agentic/config.ts`: runtime mode and Oracle/OCI environment configuration.
+- `app/api/agentic-query/route.ts`: thin TypeScript proxy route called by the React manager UI.
+- `backend/server.py`: Python HTTP service exposing `POST /agentic-query` and `GET /health`.
+- `backend/agentic/runtime.py`: supervisor workflow, record filtering, vector retrieval, summary, trace, and evaluation orchestration.
+- `backend/agentic/providers.py`: Python provider boundaries for Oracle Coherence, Cohere Embed v3, Oracle Database 23ai Vector Search, Cohere Command R+, Oracle AI Agent Studio, and Agent Studio evaluations.
+- `backend/agentic/config.py`: runtime mode and Oracle/OCI environment configuration.
 - `docs/oracle-agentic-runtime.md`: detailed runtime design and live-service environment contract.
 
 Default mode is `mock`, which keeps the application runnable without OCI credentials. The provider boundaries are named and shaped for the requested Oracle stack:
@@ -106,12 +109,16 @@ To prepare a live deployment, configure the environment variables described in `
 ```text
 .
 ├── app/
-│   ├── agentic/         # Server-side agentic runtime and Oracle provider boundaries
-│   ├── api/             # API route used by the React UI
+│   ├── api/             # Thin proxy route used by the React UI
 │   ├── data.ts          # Seeded manager, learner, recommendation, and guardrail data
 │   ├── globals.css      # Responsive enterprise UI styling
 │   ├── layout.tsx       # App metadata and root layout
 │   └── page.tsx         # Main React manager console
+├── backend/
+│   ├── agentic/         # Python agentic runtime and Oracle provider boundaries
+│   ├── tests/           # Python backend unit tests
+│   ├── Dockerfile
+│   └── server.py
 ├── docs/
 │   └── oracle-agentic-runtime.md
 ├── public/
@@ -147,6 +154,12 @@ Start the development server:
 pnpm run dev
 ```
 
+In a second terminal, start the Python agentic backend:
+
+```bash
+PYTHONPATH=backend python3 backend/server.py
+```
+
 Open the app:
 
 ```text
@@ -160,6 +173,11 @@ Build and start the production container:
 ```bash
 docker compose up --build
 ```
+
+Docker starts two services:
+
+- `agentic-backend`: Python agentic AI backend on port `8000`
+- `compliance-manager`: React/Vinext UI on port `3000`
 
 Open the app:
 
@@ -200,7 +218,7 @@ Run tests:
 pnpm test
 ```
 
-The test suite builds the app and validates that the server-rendered HTML includes:
+The test suite builds the app, validates the server-rendered React HTML, and runs Python backend unit tests. It checks that the app includes:
 
 - manager compliance console content
 - query input and action controls

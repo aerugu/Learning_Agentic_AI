@@ -9,7 +9,7 @@ import {
   queryTemplates,
   type LearnerRecord,
 } from "./data";
-import type { AgenticQueryResult } from "./agentic/types";
+import type { AgenticQueryResult } from "./agentic-types";
 
 const defaultTemplate = queryTemplates[0];
 
