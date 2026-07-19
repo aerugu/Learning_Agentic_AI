@@ -1,30 +1,110 @@
 # Oracle Fusion Learning Agentic AI
 
-Manager-facing React application for exploring Oracle Fusion HCM Learning compliance queries with seeded enterprise test data. The UI demonstrates a multi-agent compliance workflow backed by a RAG retrieval substrate: manager query intake, learner eligibility findings, policy citations, course recommendations, guardrail status, and approval-gated outreach.
+Enterprise-style React application for a manager-facing Oracle Fusion HCM Learning compliance command center. The app lets a manager sign in, submit compliance queries, review multi-agent findings, inspect policy citations, view course recommendations, and approve staged outreach.
+
+The current version is a deployable demo with realistic seeded data. It is designed as a reference implementation that can later be connected to Oracle Fusion HCM APIs, vector search, notification services, and an agent orchestration backend.
+
+## Architecture Used
+
+This application was built from the unified multi-agent compliance and RAG retrieval architecture below.
+
+![Oracle Fusion HCM Learning Cloud multi-agent compliance architecture](public/compliance_multiagent_architecture_v6_unified.svg)
+
+The diagram combines two major layers:
+
+- Agentic compliance workflow: manager query, eligibility pre-filter, supervisor agent, HCM data agent, compliance analyzer, notification agent, course recommender, human approval gate, harness state, and guardrails.
+- RAG retrieval substrate: semantic cache, query embeddings, parallel ANN vector search, score fusion, deduplication, 32K context assembly, grounded answers, and offline ingestion/enrichment.
+
+The UI maps those concepts into a practical manager console:
+
+- Manager query composer represents the query entry point.
+- Query templates simulate common supervisor intents.
+- Learner result rows represent outputs from HCM data and compliance analysis agents.
+- Policy citations represent citation-or-drop guardrails.
+- Risk score, escalation rung, and status badges represent compliance classification.
+- Course recommendation cards represent the RAG-backed course recommender path.
+- Guardrail list represents active safety, review, and governance controls.
+- Approval button represents the human gate before reminders are sent.
+
+## Product Goals
+
+- Provide a clean enterprise UI for compliance managers.
+- Demonstrate how agent findings can stay auditable through citations and policy stamps.
+- Keep the application runnable locally, in Docker, and in a deployable production build.
+- Include realistic test data for demos and future development.
+- Preserve a public GitHub-ready codebase with clear setup and run instructions.
 
 ## Features
 
-- Manager login screen with demo local auth state
-- Query composer with reusable compliance, risk, recommendation, and notification prompts
-- Seeded learner records with departments, due dates, escalation rung, risk score, reasons, and citations
-- Course recommendation cards with vector match explanations
-- Guardrail checklist aligned to the multi-agent architecture
-- Responsive enterprise dashboard UI built with React and Next-compatible vinext
-- Render tests that validate the production HTML output
+- Manager login page with demo local auth state.
+- Manager query input for free-form compliance questions.
+- Reusable query templates for missing compliance, high-risk learners, recommendations, and reminders.
+- Seeded Oracle Fusion HCM Learning test data.
+- Compliance result table with learner, requirement, status, due date, escalation, risk score, reason, and citations.
+- Course recommendation cards with vector match explanations.
+- Guardrail panel aligned to the multi-agent architecture.
+- Responsive enterprise dashboard styling.
+- Docker runtime for production-like local execution.
+- Render tests that validate the production HTML output.
+
+## Technology Stack
+
+- React `19`
+- Next-compatible `vinext`
+- TypeScript
+- Tailwind CSS entrypoint with custom CSS
+- Cloudflare/Vite-compatible build shape
+- Docker and Docker Compose
+- Node.js test runner
+- ESLint
+
+## Project Structure
+
+```text
+.
+├── app/
+│   ├── data.ts          # Seeded manager, learner, recommendation, and guardrail data
+│   ├── globals.css      # Responsive enterprise UI styling
+│   ├── layout.tsx       # App metadata and root layout
+│   └── page.tsx         # Main React manager console
+├── public/
+│   └── compliance_multiagent_architecture_v6_unified.svg
+├── tests/
+│   └── rendered-html.test.mjs
+├── Dockerfile
+├── docker-compose.yml
+├── package.json
+├── pnpm-lock.yaml
+└── README.md
+```
 
 ## Prerequisites
 
+Install these before running locally:
+
 - Node.js `>=22.13.0`
 - pnpm
+- Docker Desktop, if running with Docker
 
-## Run Locally
+## Run Locally With pnpm
+
+Install dependencies:
 
 ```bash
 pnpm install
+```
+
+Start the development server:
+
+```bash
 pnpm run dev
 ```
 
-The development server prints a local URL. Open it in a browser to use the manager console.
+Open the app:
+
+```text
+http://localhost:3000
+```
 
 ## Run With Docker
 
@@ -34,46 +114,169 @@ Build and start the production container:
 docker compose up --build
 ```
 
-Then open `http://localhost:3000`.
+Open the app:
 
-To stop the app:
+```text
+http://localhost:3000
+```
+
+Stop the container:
 
 ```bash
 docker compose down
 ```
 
-## Test And Build
+Rebuild from scratch if dependencies or the Dockerfile change:
+
+```bash
+docker compose build --no-cache
+docker compose up
+```
+
+## Test And Validate
+
+Run lint:
+
+```bash
+pnpm run lint
+```
+
+Build the production output:
 
 ```bash
 pnpm run build
+```
+
+Run tests:
+
+```bash
 pnpm test
 ```
 
-`pnpm test` builds the app and verifies the rendered HTML contains the manager workflow, sample records, citations, recommendations, and copied architecture asset.
+The test suite builds the app and validates that the server-rendered HTML includes:
 
-## Test Data
+- manager compliance console content
+- query input and action controls
+- seeded learner records
+- policy citations
+- course recommendations
+- architecture diagram reference
+- no leftover starter preview metadata
 
-The seeded data lives in `app/data.ts`:
+## Demo Credentials
 
-- `queryTemplates`: reusable manager queries
-- `learnerRecords`: demo Oracle Fusion learner compliance records
-- `recommendations`: course matches returned by the simulated RAG recommender
-- `guardrails`: active controls shown in the UI
+The login form is intentionally local demo state only.
 
-Replace these exports with API calls when connecting to real Oracle Fusion HCM, vector search, notification, or orchestration services.
+Default demo values:
 
-## Deployment Notes
+```text
+Manager email: asha.mehta@example.com
+Password: ComplianceDemo2026
+```
 
-This project uses the Sites-compatible vinext structure and includes `.openai/hosting.json`. It can be built locally with `npm run build` and published to a Git repository for future reference.
+No real authentication service is called in this version.
 
-Suggested public Git flow:
+## Seeded Test Data
+
+The app uses static test data in `app/data.ts`.
+
+Key exports:
+
+- `managerProfile`: manager identity and sync context.
+- `queryTemplates`: reusable manager queries.
+- `learnerRecords`: employee learning compliance records.
+- `recommendations`: RAG-style course recommendations.
+- `guardrails`: active safety and governance controls.
+
+Example learner fields:
+
+- employee ID
+- name
+- department
+- location
+- manager
+- required course
+- due date
+- days past due
+- compliance status
+- escalation rung
+- risk score
+- explanation
+- policy citations
+- recommended course
+
+## How The Query Demo Works
+
+The current app simulates agent responses in the browser:
+
+1. The manager selects a query template or edits the query text.
+2. The app infers the query intent from the selected template.
+3. Seeded learner records are filtered for compliance, risk, recommendations, or communications.
+4. A summary is generated from the matching result set.
+5. Results are displayed with status, risk, escalation, reasons, and citations.
+
+This keeps the project easy to run without backend credentials while preserving the UI shape needed for a real agentic workflow.
+
+## Future Backend Integration
+
+To connect this reference UI to production systems, replace the local data and filtering with service calls:
+
+- Oracle Fusion HCM workers and learning records APIs.
+- Compliance policy service.
+- Vector database or Oracle 23ai AI Vector Search.
+- Agent supervisor/orchestrator endpoint.
+- Notification drafting and approval workflow.
+- Audit log and dispute registry persistence.
+- Real identity provider or Sign in with ChatGPT/workspace access.
+
+Recommended API boundaries:
+
+- `GET /api/manager/profile`
+- `GET /api/query-templates`
+- `POST /api/compliance/query`
+- `POST /api/outreach/approve`
+- `GET /api/recommendations`
+- `GET /api/audit/:learnerId`
+
+## Docker Notes
+
+The Docker image uses Node.js `22` and pnpm through Corepack. The production container runs:
 
 ```bash
-git add .
-git commit -m "Build Oracle Fusion learning compliance manager UI"
+pnpm run start -- --host 0.0.0.0 --port 3000
+```
+
+The Compose service maps container port `3000` to host port `3000`.
+
+## GitHub Publish Steps
+
+This repository can be pushed to GitHub with:
+
+```bash
+git remote add origin https://github.com/aerugu/Learning_Agentic_AI.git
 git branch -M main
-git remote add origin https://github.com/<your-user>/<your-repo>.git
 git push -u origin main
 ```
 
-Use a private repository until you remove or replace any proprietary sample data, diagrams, credentials, or customer-specific details.
+If the remote already exists:
+
+```bash
+git remote set-url origin https://github.com/aerugu/Learning_Agentic_AI.git
+git push -u origin main
+```
+
+## Security And Data Notes
+
+- The included data is demo data, not production Oracle Fusion data.
+- Do not commit real employee records, secrets, API tokens, OAuth credentials, or customer-specific policy documents.
+- Use environment variables and hosted secret management for production credentials.
+- Keep human approval in the workflow before sending notifications.
+- Preserve citations and audit logs for compliance decisions.
+
+## Current Status
+
+- Local build passes.
+- Render tests pass.
+- Docker build and runtime verified.
+- Public Sites deployment created.
+- Ready to push to `aerugu/Learning_Agentic_AI`.
