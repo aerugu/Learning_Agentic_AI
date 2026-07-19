@@ -26,6 +26,22 @@ pnpm run dev
 
 The development server prints a local URL. Open it in a browser to use the manager console.
 
+## Run With Docker
+
+Build and start the production container:
+
+```bash
+docker compose up --build
+```
+
+Then open `http://localhost:3000`.
+
+To stop the app:
+
+```bash
+docker compose down
+```
+
 ## Test And Build
 
 ```bash

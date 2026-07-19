@@ -1,0 +1,11 @@
+.git
+.next
+.pnpm-store
+.vinext
+.wrangler
+coverage
+dist
+node_modules
+npm-debug.log*
+outputs
+work

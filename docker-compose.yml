@@ -1,0 +1,11 @@
+services:
+  compliance-manager:
+    build:
+      context: .
+    image: oracle-fusion-learning-agentic-ai:latest
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3000
