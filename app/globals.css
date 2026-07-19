@@ -343,6 +343,39 @@ h1 {
   line-height: 1.5;
 }
 
+.error-text {
+  margin-top: 8px;
+  color: var(--oracle-dark);
+  font-weight: 800;
+}
+
+.agent-stack {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.agent-stack article {
+  display: grid;
+  gap: 6px;
+  min-height: 112px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfaf7;
+}
+
+.agent-stack span,
+.agent-stack small {
+  color: var(--muted);
+}
+
+.agent-stack strong {
+  color: var(--green);
+  line-height: 1.15;
+}
+
 .results-table {
   overflow: hidden;
   border: 1px solid var(--line);
@@ -467,6 +500,64 @@ h1 {
   font-size: 0.9rem;
 }
 
+.trace-panel {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.trace-panel article {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.9fr) auto minmax(0, 1.3fr);
+  gap: 14px;
+  align-items: start;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+
+.trace-panel article:first-of-type {
+  border-top: 0;
+}
+
+.trace-panel div {
+  display: grid;
+  gap: 4px;
+}
+
+.trace-panel small,
+.trace-panel p,
+.trace-empty {
+  color: var(--muted);
+}
+
+.trace-panel p {
+  margin-bottom: 0;
+  line-height: 1.45;
+}
+
+.trace-status {
+  min-width: 78px;
+  padding: 6px 8px;
+  border-radius: 999px;
+  background: #e1f5ee;
+  color: var(--green);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.trace-status.review {
+  background: #faeeda;
+  color: var(--amber);
+}
+
+.trace-status.blocked {
+  background: #fbe3df;
+  color: var(--oracle-dark);
+}
+
 @media (max-width: 1040px) {
   .login-panel,
   .workspace,
@@ -483,6 +574,10 @@ h1 {
   }
 
   .metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .agent-stack {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -508,8 +603,10 @@ h1 {
   }
 
   .metric-grid,
+  .agent-stack,
   .table-header,
-  .result-row {
+  .result-row,
+  .trace-panel article {
     grid-template-columns: 1fr;
   }
 

@@ -7,18 +7,9 @@ import {
   learnerRecords,
   managerProfile,
   queryTemplates,
-  recommendations,
   type LearnerRecord,
-  type QueryTemplate,
 } from "./data";
-
-type QueryResult = {
-  query: string;
-  template: QueryTemplate;
-  generatedAt: string;
-  records: LearnerRecord[];
-  summary: string;
-};
+import type { AgenticQueryResult } from "./agentic/types";
 
 const defaultTemplate = queryTemplates[0];
 
@@ -29,42 +20,9 @@ function getStatusLabel(status: LearnerRecord["status"]) {
     .join(" ");
 }
 
-function resolveRecords(template: QueryTemplate, query: string) {
-  const normalized = `${template.intent} ${query}`.toLowerCase();
-
-  if (normalized.includes("complete") && !normalized.includes("not completed")) {
-    return learnerRecords;
-  }
-
-  if (normalized.includes("risk") || normalized.includes("escalation")) {
-    return learnerRecords
-      .filter((record) => record.riskScore >= 70)
-      .sort((left, right) => right.riskScore - left.riskScore);
-  }
-
-  if (normalized.includes("recommend")) {
-    return learnerRecords.filter((record) => record.status !== "complete");
-  }
-
-  return learnerRecords.filter((record) => record.status !== "complete");
-}
-
-function summarize(records: LearnerRecord[], template: QueryTemplate) {
+function summarize(records: LearnerRecord[]) {
   const overdue = records.filter((record) => record.status === "overdue").length;
   const review = records.filter((record) => record.status === "under-review").length;
-  const escalation = records.filter((record) => record.escalation !== "none").length;
-
-  if (template.intent === "communications") {
-    return `${records.length} learners need manager-reviewed outreach. ${review} are frozen by dispute or eligibility review; ${escalation} have an escalation rung ready after approval.`;
-  }
-
-  if (template.intent === "recommendations") {
-    return `${records.length} learners have course gaps. The recommender uses outcome and skill vectors first, then falls back to syllabus similarity when confidence drops.`;
-  }
-
-  if (template.intent === "risk") {
-    return `${records.length} high-risk records found. ${overdue} are overdue and ${review} require human review before any notification is sent.`;
-  }
 
   return `${records.length} learners require attention. ${overdue} are overdue, ${review} are under review, and every row includes policy citations for audit readiness.`;
 }
@@ -74,17 +32,29 @@ export default function Home() {
   const [managerEmail, setManagerEmail] = useState("asha.mehta@example.com");
   const [selectedTemplate, setSelectedTemplate] = useState(defaultTemplate);
   const [query, setQuery] = useState(defaultTemplate.query);
-  const [result, setResult] = useState<QueryResult>(() => {
-    const records = resolveRecords(defaultTemplate, defaultTemplate.query);
-
-    return {
-      query: defaultTemplate.query,
-      template: defaultTemplate,
-      generatedAt: managerProfile.lastSync,
-      records,
-      summary: summarize(records, defaultTemplate),
-    };
-  });
+  const [isRunning, setIsRunning] = useState(false);
+  const [queryError, setQueryError] = useState<string | null>(null);
+  const [result, setResult] = useState<AgenticQueryResult>(() => ({
+    query: defaultTemplate.query,
+    template: defaultTemplate,
+    generatedAt: managerProfile.lastSync,
+    runtimeMode: "mock",
+    supervisorModel: "cohere.command-r-plus",
+    embeddingModel: "cohere.embed-english-v3.0",
+    cacheStatus: "bypass",
+    records: learnerRecords.filter((record) => record.status !== "complete"),
+    recommendations: [],
+    summary: summarize(learnerRecords.filter((record) => record.status !== "complete")),
+    trace: [],
+    evaluation: {
+      framework: "Agent Studio built-in evaluation framework",
+      dataset: "50-case compliance golden set",
+      faithfulness: 0.96,
+      answerRelevance: 0.93,
+      citationCoverage: 1,
+      deploymentGate: "pass",
+    },
+  }));
 
   const metrics = useMemo(() => {
     const active = learnerRecords.filter((record) => record.status !== "complete");
@@ -102,20 +72,32 @@ export default function Home() {
     ];
   }, []);
 
-  function runQuery(event: FormEvent<HTMLFormElement>) {
+  async function runQuery(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const records = resolveRecords(selectedTemplate, query);
+    setIsRunning(true);
+    setQueryError(null);
 
-    setResult({
-      query,
-      template: selectedTemplate,
-      generatedAt: new Date().toLocaleString("en-US", {
-        dateStyle: "medium",
-        timeStyle: "short",
-      }),
-      records,
-      summary: summarize(records, selectedTemplate),
-    });
+    try {
+      const response = await fetch("/api/agentic-query", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          query,
+          templateId: selectedTemplate.id,
+          managerEmail,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Agentic query failed");
+      }
+
+      setResult((await response.json()) as AgenticQueryResult);
+    } catch (error) {
+      setQueryError(error instanceof Error ? error.message : "Agentic query failed");
+    } finally {
+      setIsRunning(false);
+    }
   }
 
   function applyTemplate(template: QueryTemplate) {
@@ -225,8 +207,11 @@ export default function Home() {
               rows={4}
             />
             <div className="query-actions">
-              <span>RAG substrate: org-scoped ANN, score fusion, 32k context assembly</span>
-              <button type="submit">Run query</button>
+              <span>
+                Oracle stack: Agent Studio, Cohere Command R+, Cohere Embed v3, Coherence,
+                Oracle 23ai Vector Search
+              </span>
+              <button type="submit">{isRunning ? "Running agents" : "Run agent team"}</button>
             </div>
           </form>
 
@@ -238,8 +223,40 @@ export default function Home() {
                 Query: &quot;{result.query}&quot; generated {result.generatedAt}. Human approval is required
                 before reminders leave the system.
               </p>
+              {queryError ? <p className="error-text">{queryError}</p> : null}
             </div>
             <button type="button">Approve staged outreach</button>
+          </section>
+
+          <section className="agent-stack" aria-label="Agentic AI runtime stack">
+            <article>
+              <span>Supervisor LLM</span>
+              <strong>Cohere Command R+</strong>
+              <small>{result.supervisorModel}</small>
+            </article>
+            <article>
+              <span>Embeddings</span>
+              <strong>Cohere Embed v3</strong>
+              <small>{result.embeddingModel} via OCI Generative AI</small>
+            </article>
+            <article>
+              <span>Semantic Cache</span>
+              <strong>Oracle Coherence</strong>
+              <small>cache {result.cacheStatus}</small>
+            </article>
+            <article>
+              <span>Vector Retrieval</span>
+              <strong>Oracle Database 23ai</strong>
+              <small>AI Vector Search</small>
+            </article>
+            <article>
+              <span>Evaluation</span>
+              <strong>{result.evaluation.deploymentGate.toUpperCase()}</strong>
+              <small>
+                faithfulness {Math.round(result.evaluation.faithfulness * 100)}% · citations{" "}
+                {Math.round(result.evaluation.citationCoverage * 100)}%
+              </small>
+            </article>
           </section>
 
           <section className="results-table" aria-label="Compliance query results">
@@ -277,7 +294,7 @@ export default function Home() {
           <section className="lower-grid">
             <div>
               <p className="eyebrow">Recommended learning</p>
-              {recommendations.map((course) => (
+              {result.recommendations.map((course) => (
                 <article className="course-card" key={course.courseId}>
                   <div>
                     <strong>{course.title}</strong>
@@ -299,6 +316,26 @@ export default function Home() {
                 ))}
               </ul>
             </div>
+          </section>
+
+          <section className="trace-panel" aria-label="Agent Studio execution trace">
+            <p className="eyebrow">Oracle AI Agent Studio trace</p>
+            {result.trace.length === 0 ? (
+              <p className="trace-empty">Run the agent team to generate a supervisor trace.</p>
+            ) : (
+              result.trace.map((step) => (
+                <article key={step.id}>
+                  <div>
+                    <strong>{step.agent}</strong>
+                    <small>
+                      {step.platform} · {step.modelOrService}
+                    </small>
+                  </div>
+                  <span className={`trace-status ${step.status}`}>{step.status}</span>
+                  <p>{step.details}</p>
+                </article>
+              ))
+            )}
           </section>
         </div>
       </section>

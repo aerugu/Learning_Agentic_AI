@@ -76,15 +76,44 @@ The screenshots that inspired this project show generic AI stack layers. For thi
 
 This codebase does not call those Oracle services yet. The current implementation is a runnable React reference UI with seeded data. The table above documents the intended enterprise architecture to connect behind this UI.
 
+## Agentic Runtime Implementation
+
+The project has been rebuilt so the React UI calls a server-side agentic runtime instead of doing all query logic in the browser.
+
+Runtime entry points:
+
+- `app/api/agentic-query/route.ts`: API route called by the React manager UI.
+- `app/agentic/runtime.ts`: supervisor workflow, record filtering, vector retrieval, summary, trace, and evaluation orchestration.
+- `app/agentic/providers.ts`: provider boundaries for Oracle Coherence, Cohere Embed v3, Oracle Database 23ai Vector Search, Cohere Command R+, Oracle AI Agent Studio, and Agent Studio evaluations.
+- `app/agentic/config.ts`: runtime mode and Oracle/OCI environment configuration.
+- `docs/oracle-agentic-runtime.md`: detailed runtime design and live-service environment contract.
+
+Default mode is `mock`, which keeps the application runnable without OCI credentials. The provider boundaries are named and shaped for the requested Oracle stack:
+
+- Cohere Command R+
+- Cohere Embeddings v3
+- Oracle Coherence
+- Oracle Database 23ai AI Vector Search
+- Cohere Embed via OCI Generative AI service
+- OCI Generative AI service
+- Oracle AI Agent Studio
+- Agent Studio built-in evaluation framework
+
+To prepare a live deployment, configure the environment variables described in `docs/oracle-agentic-runtime.md` and replace the placeholder live adapter errors with signed OCI, Oracle Database, Coherence, and Agent Studio client calls.
+
 ## Project Structure
 
 ```text
 .
 ├── app/
+│   ├── agentic/         # Server-side agentic runtime and Oracle provider boundaries
+│   ├── api/             # API route used by the React UI
 │   ├── data.ts          # Seeded manager, learner, recommendation, and guardrail data
 │   ├── globals.css      # Responsive enterprise UI styling
 │   ├── layout.tsx       # App metadata and root layout
 │   └── page.tsx         # Main React manager console
+├── docs/
+│   └── oracle-agentic-runtime.md
 ├── public/
 │   └── compliance_multiagent_architecture_v6_unified.svg
 ├── tests/
