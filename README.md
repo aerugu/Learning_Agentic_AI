@@ -90,6 +90,7 @@ Runtime entry points:
 - `backend/agentic/providers.py`: Python provider boundaries for Oracle Coherence, Cohere Embed v3, Oracle Database 23ai Vector Search, Cohere Command R+, Oracle AI Agent Studio, and Agent Studio evaluations.
 - `backend/agentic/config.py`: runtime mode and Oracle/OCI environment configuration.
 - `docs/oracle-agentic-runtime.md`: detailed runtime design and live-service environment contract.
+- `docs/agent-runs/`: timestamped agent execution runbook logs showing prompt, output, human decision, artifact, and validation command for each agent step.
 
 Default mode is `mock`, which keeps the application runnable without OCI credentials. The provider boundaries are named and shaped for the requested Oracle stack:
 
