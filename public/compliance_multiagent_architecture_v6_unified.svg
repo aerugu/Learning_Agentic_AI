@@ -1,0 +1,265 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1480" width="1100" height="1480" font-family="Segoe UI, Arial, sans-serif" role="img">
+  <title>Oracle Fusion HCM Learning Cloud — v6 Unified Architecture: Multi-Agent Team on RAG Retrieval Substrate</title>
+  <desc>Version 6 merges two systems: the production semantic-search RAG pipeline (offline LLM-enriched ingestion with three-vector chunking, and online query with semantic cache, parallel ANN, score fusion, 32k context assembly) as the retrieval substrate beneath the multi-agent compliance workflow (supervisor plus four specialists, harness, guardrails). Five integration points I1 to I5 are marked at the seam.</desc>
+
+  <defs>
+    <marker id="ag" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M1 1L6 3.5L1 6" fill="none" stroke="#888780" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="ap" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M1 1L6 3.5L1 6" fill="none" stroke="#534ab7" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="at" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M1 1L6 3.5L1 6" fill="none" stroke="#0f6e56" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="ao" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M1 1L6 3.5L1 6" fill="none" stroke="#ba7517" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect width="1100" height="1480" fill="#f5f4f1"/>
+
+  <!-- TITLE -->
+  <rect x="20" y="14" width="1060" height="52" rx="8" fill="#c74634"/>
+  <text x="540" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Oracle Fusion HCM Learning Cloud — v6 Unified Architecture</text>
+  <text x="540" y="54" text-anchor="middle" font-size="11.5" fill="rgba(255,255,255,0.85)">Multi-agent compliance workflow (top) running ON the production RAG retrieval substrate (bottom) · integration seam marked I1–I5</text>
+
+  <!-- ═════════ UPPER HALF — AGENTIC LAYER ═════════ -->
+  <rect x="20" y="80" width="1060" height="560" rx="10" fill="none" stroke="#d85a30" stroke-width="2"/>
+  <rect x="20" y="80" width="430" height="22" rx="4" fill="#d85a30"/>
+  <text x="30" y="95" font-size="10" fill="#ffffff" font-weight="700">AGENTIC LAYER — AGENT TEAM · HARNESS · GUARDRAILS (v1–v5: loops · budgets · P1–P8)</text>
+
+  <!-- Trigger -->
+  <rect x="390" y="112" width="320" height="40" rx="7" fill="#ffffff" stroke="#888780" stroke-width="1"/>
+  <text x="550" y="128" text-anchor="middle" font-size="9.5" fill="#5f5e5a" font-weight="600">MANAGER QUERY · ⑤ mutex · P5 gate-timeout</text>
+  <text x="550" y="143" text-anchor="middle" font-size="9.5" fill="#2c2c2a">"Who hasn't completed compliance training?"</text>
+  <line x1="550" y1="152" x2="550" y2="168" stroke="#888780" stroke-width="1.5" marker-end="url(#ag)"/>
+
+  <!-- Eligibility prefilter -->
+  <rect x="40" y="168" width="1020" height="26" rx="5" fill="#fbeaf0" stroke="#d4537e" stroke-width="1"/>
+  <text x="550" y="185" text-anchor="middle" font-size="8.5" fill="#72243e" font-weight="700">P3 ELIGIBILITY PRE-FILTER (code) · leave · notice · grace-period · transfers — before any LLM sees the roster</text>
+
+  <!-- Supervisor -->
+  <rect x="300" y="206" width="500" height="58" rx="8" fill="#eeedfe" stroke="#534ab7" stroke-width="1.5"/>
+  <rect x="300" y="206" width="500" height="20" rx="8" fill="#534ab7"/>
+  <rect x="300" y="216" width="500" height="10" fill="#534ab7"/>
+  <text x="310" y="220" font-size="9.5" fill="#ffffff" font-weight="700">SUPERVISOR — bounded Plan→Act→Observe→Reflect · ≈4k budget</text>
+  <text x="550" y="241" text-anchor="middle" font-size="8.5" fill="#3c3489">② 2 retries/step · ④ plan-hash · ③ timeouts · batch controller 50/batch · summarize-then-discard</text>
+  <text x="550" y="255" text-anchor="middle" font-size="8.5" fill="#534ab7">checks dispute registry (P2) + policy version before classification</text>
+
+  <path d="M400 264 L230 292" stroke="#534ab7" stroke-width="1.2" fill="none" stroke-dasharray="4 2" marker-end="url(#ap)"/>
+  <path d="M480 264 L440 292" stroke="#534ab7" stroke-width="1.2" fill="none" stroke-dasharray="4 2" marker-end="url(#ap)"/>
+  <path d="M620 264 L665 292" stroke="#534ab7" stroke-width="1.2" fill="none" stroke-dasharray="4 2" marker-end="url(#ap)"/>
+  <path d="M700 264 L890 292" stroke="#534ab7" stroke-width="1.2" fill="none" stroke-dasharray="4 2" marker-end="url(#ap)"/>
+
+  <!-- 4 agents -->
+  <rect x="40" y="292" width="250" height="92" rx="7" fill="#e1f5ee" stroke="#1d9e75" stroke-width="1.2"/>
+  <text x="165" y="310" text-anchor="middle" font-size="9.5" fill="#085041" font-weight="700">1 · HCM Data Agent · ≈8k/batch</text>
+  <text x="165" y="324" text-anchor="middle" font-size="8" fill="#0f6e56">Field projection (6 fields) · pagination cap</text>
+  <rect x="50" y="332" width="230" height="22" rx="3" fill="#fbeaf0"/>
+  <text x="165" y="347" text-anchor="middle" font-size="8" fill="#72243e" font-weight="600">P1 freshness: sync-SLA flag suppression</text>
+  <text x="165" y="370" text-anchor="middle" font-size="8" fill="#1d9e75">/hcm/v4/workers · learningRecords (projected)</text>
+
+  <rect x="310" y="292" width="250" height="92" rx="7" fill="#e1f5ee" stroke="#1d9e75" stroke-width="1.2"/>
+  <text x="435" y="310" text-anchor="middle" font-size="9.5" fill="#085041" font-weight="700">2 · Compliance Analyzer · ≈12k</text>
+  <text x="435" y="324" text-anchor="middle" font-size="8" fill="#0f6e56">Rule table first (500 tok) · citations mandatory</text>
+  <rect x="320" y="332" width="230" height="22" rx="3" fill="#fbeaf0"/>
+  <text x="435" y="347" text-anchor="middle" font-size="8" fill="#72243e" font-weight="600">P2: disputed → UNDER_REVIEW · ambiguity halt 20%</text>
+  <text x="435" y="370" text-anchor="middle" font-size="8" fill="#0f6e56">ambiguous cases → RAG substrate (I2, top-5)</text>
+
+  <rect x="580" y="292" width="240" height="92" rx="7" fill="#faece7" stroke="#d85a30" stroke-width="1.2"/>
+  <text x="700" y="310" text-anchor="middle" font-size="9.5" fill="#4a1b0c" font-weight="700">3 · Notification Agent · ≈1.5k/email</text>
+  <text x="700" y="324" text-anchor="middle" font-size="8" fill="#993c1d">Per-recipient · idempotent · moderated</text>
+  <rect x="590" y="332" width="220" height="22" rx="3" fill="#fbeaf0"/>
+  <text x="700" y="347" text-anchor="middle" font-size="8" fill="#72243e" font-weight="600">P5 graduated ladder · P6 locale windows</text>
+  <text x="700" y="370" text-anchor="middle" font-size="8" fill="#993c1d">appeal link (P2) in every email</text>
+
+  <rect x="840" y="292" width="220" height="92" rx="7" fill="#e6f1fb" stroke="#378add" stroke-width="1.5"/>
+  <text x="950" y="310" text-anchor="middle" font-size="9.5" fill="#042c53" font-weight="700">4 · Course Recommender · ≈4k</text>
+  <text x="950" y="324" text-anchor="middle" font-size="8" fill="#185fa5">Per-person · top-3 best-effort</text>
+  <rect x="850" y="332" width="200" height="22" rx="3" fill="#fbeaf0"/>
+  <text x="950" y="347" text-anchor="middle" font-size="8" fill="#72243e" font-weight="600">P7: RBAC catalog · budget flag · freq cap</text>
+  <text x="950" y="370" text-anchor="middle" font-size="8.5" fill="#0c447c" font-weight="700">retrieval = RAG substrate (I1)</text>
+
+  <!-- Human gate + state -->
+  <rect x="40" y="398" width="640" height="38" rx="6" fill="#f1efe8" stroke="#5f5e5a" stroke-width="1"/>
+  <text x="360" y="414" text-anchor="middle" font-size="8.5" fill="#2c2c2a" font-weight="700">HUMAN GATE — approve before send · 10% forced review · P2 dispute freezes escalation</text>
+  <text x="360" y="428" text-anchor="middle" font-size="8" fill="#5f5e5a">preview: staged list + citations + one sample email</text>
+
+  <rect x="700" y="398" width="360" height="38" rx="6" fill="#eeedfe" stroke="#534ab7" stroke-width="1"/>
+  <text x="880" y="414" text-anchor="middle" font-size="8.5" fill="#3c3489" font-weight="700">HARNESS STATE — externalized memory</text>
+  <text x="880" y="428" text-anchor="middle" font-size="8" fill="#534ab7">disputes · rungs · dedup · plan hashes · rec-frequency</text>
+
+  <!-- system guardrails strip -->
+  <rect x="40" y="448" width="1020" height="26" rx="5" fill="#fcebeb" stroke="#a32d2d" stroke-width="1"/>
+  <text x="550" y="465" text-anchor="middle" font-size="8.5" fill="#791f1f" font-weight="700">07 SYSTEM GUARDRAILS — injection filter · PII masking · moderation · citation-or-drop · loop guards ①–⑥ · token budgets · gateway 32k cap</text>
+
+  <!-- outputs -->
+  <rect x="40" y="486" width="330" height="34" rx="6" fill="#e1f5ee" stroke="#1d9e75" stroke-width="1"/>
+  <text x="205" y="500" text-anchor="middle" font-size="8.5" fill="#085041" font-weight="700">Compliance report · policy-stamped · UNDER_REVIEW shown</text>
+  <text x="205" y="513" text-anchor="middle" font-size="8" fill="#0f6e56">counts by code, narrative by LLM (≈3k)</text>
+  <rect x="386" y="486" width="330" height="34" rx="6" fill="#faece7" stroke="#d85a30" stroke-width="1"/>
+  <text x="551" y="500" text-anchor="middle" font-size="8.5" fill="#4a1b0c" font-weight="700">Reminders · graduated · localized · appealable</text>
+  <text x="551" y="513" text-anchor="middle" font-size="8" fill="#993c1d">idempotent · sync-lag disclaimer embedded</text>
+  <rect x="732" y="486" width="328" height="34" rx="6" fill="#e6f1fb" stroke="#378add" stroke-width="1"/>
+  <text x="896" y="500" text-anchor="middle" font-size="8.5" fill="#042c53" font-weight="700">Recommendations · match_reason surfaced to manager</text>
+  <text x="896" y="513" text-anchor="middle" font-size="8" fill="#185fa5">decoupled timing · RBAC-visible · capped</text>
+
+  <!-- concept strip -->
+  <rect x="40" y="532" width="1020" height="20" rx="5" fill="#eeedfe" stroke="#534ab7" stroke-width="0.8"/>
+  <text x="550" y="546" text-anchor="middle" font-size="8.5" fill="#3c3489" font-weight="700">01 Loops · 02 MCP · 03 Multi-agent · 04 Gateway · 05 Economics · 06 Evals · 07 Guardrails · 08 Observability · 09 Harness · P1–P8 person-protecting</text>
+
+  <!-- ═════════ INTEGRATION SEAM ═════════ -->
+  <rect x="40" y="564" width="1020" height="60" rx="8" fill="#faeeda" stroke="#ba7517" stroke-width="2"/>
+  <text x="550" y="582" text-anchor="middle" font-size="10" fill="#633806" font-weight="700">INTEGRATION SEAM — the RAG pipeline is a TOOL the agents orchestrate</text>
+  <text x="550" y="597" text-anchor="middle" font-size="8.5" fill="#854f0b">I1 Recommender → Vector B (Outcomes+Skills) retrieval per person · I2 Analyzer ambiguous-case top-5 via fusion · I3 org_id ANN pre-filter = scope guardrail inside retrieval</text>
+  <text x="550" y="611" text-anchor="middle" font-size="8.5" fill="#854f0b">I4 shared 32k dynamic context assembly serves ALL agent calls · I5 semantic cache + model_version metadata back P8 eval-gated migrations</text>
+
+  <!-- seam arrows down -->
+  <line x1="950" y1="384" x2="950" y2="564" stroke="#ba7517" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ao)"/>
+  <rect x="956" y="460" width="26" height="16" rx="3" fill="#ba7517"/>
+  <text x="969" y="472" text-anchor="middle" font-size="9" fill="#ffffff" font-weight="700">I1</text>
+  <line x1="435" y1="384" x2="435" y2="564" stroke="#ba7517" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ao)"/>
+  <rect x="441" y="460" width="26" height="16" rx="3" fill="#ba7517"/>
+  <text x="454" y="472" text-anchor="middle" font-size="9" fill="#ffffff" font-weight="700">I2</text>
+
+  <line x1="550" y1="624" x2="550" y2="644" stroke="#ba7517" stroke-width="1.5" marker-end="url(#ao)"/>
+
+  <!-- ═════════ LOWER HALF — RAG SUBSTRATE (user's real system) ═════════ -->
+  <rect x="20" y="644" width="1060" height="700" rx="10" fill="none" stroke="#0f6e56" stroke-width="2"/>
+  <rect x="20" y="644" width="560" height="22" rx="4" fill="#0f6e56"/>
+  <text x="30" y="659" font-size="10" fill="#ffffff" font-weight="700">RAG RETRIEVAL SUBSTRATE — YOUR PRODUCTION SEMANTIC SEARCH PIPELINE (built previously, now agent-consumable)</text>
+
+  <!-- ONLINE QUERY (left column) -->
+  <rect x="40" y="678" width="500" height="420" rx="8" fill="#ffffff" stroke="#5dcaa5" stroke-width="1"/>
+  <text x="290" y="697" text-anchor="middle" font-size="9.5" fill="#085041" font-weight="700">ONLINE QUERY PIPELINE · p95 cache-miss 700–900ms</text>
+
+  <rect x="60" y="708" width="460" height="34" rx="5" fill="#f1efe8" stroke="#b4b2a9" stroke-width="0.8"/>
+  <text x="290" y="722" text-anchor="middle" font-size="8.5" fill="#2c2c2a" font-weight="600">Query in: learner search OR agent call (I1/I2) — same entry</text>
+  <text x="290" y="735" text-anchor="middle" font-size="8" fill="#5f5e5a">"leadership courses for managers" / "similar to {completed course outcomes}"</text>
+  <line x1="290" y1="742" x2="290" y2="754" stroke="#0f6e56" stroke-width="1.2" marker-end="url(#at)"/>
+
+  <rect x="60" y="754" width="460" height="30" rx="5" fill="#faeeda" stroke="#ef9f27" stroke-width="0.8"/>
+  <text x="290" y="767" text-anchor="middle" font-size="8.5" fill="#633806" font-weight="700">Semantic cache — query vector + org_id · cosine ≥ 0.93 · HIT &lt;50ms (I5)</text>
+  <text x="290" y="779" text-anchor="middle" font-size="8" fill="#854f0b">serves learner UI and agent calls alike</text>
+  <line x1="290" y1="784" x2="290" y2="796" stroke="#0f6e56" stroke-width="1.2" marker-end="url(#at)"/>
+
+  <rect x="60" y="796" width="460" height="26" rx="5" fill="#e1f5ee" stroke="#5dcaa5" stroke-width="0.8"/>
+  <text x="290" y="813" text-anchor="middle" font-size="8.5" fill="#085041" font-weight="600">Query embedding — /internal-embeddings → 1,536-dim · same model as ingest (non-negotiable) · 30–60ms</text>
+  <line x1="290" y1="822" x2="290" y2="834" stroke="#0f6e56" stroke-width="1.2" marker-end="url(#at)"/>
+
+  <rect x="60" y="834" width="460" height="76" rx="5" fill="#e1f5ee" stroke="#1d9e75" stroke-width="1"/>
+  <text x="290" y="850" text-anchor="middle" font-size="8.5" fill="#085041" font-weight="700">Parallel ANN cosine search · org_id PRE-FILTER (I3 = scope enforced in-index) · ~80–120ms</text>
+  <rect x="72" y="858" width="140" height="42" rx="4" fill="#ffffff" stroke="#5dcaa5" stroke-width="0.8"/>
+  <text x="142" y="872" text-anchor="middle" font-size="8" fill="#085041" font-weight="700">Vector A</text>
+  <text x="142" y="883" text-anchor="middle" font-size="7.5" fill="#0f6e56">Title+Desc+Syllabus</text>
+  <text x="142" y="894" text-anchor="middle" font-size="7.5" fill="#1d9e75">content queries</text>
+  <rect x="220" y="858" width="140" height="42" rx="4" fill="#e6f1fb" stroke="#378add" stroke-width="1.2"/>
+  <text x="290" y="872" text-anchor="middle" font-size="8" fill="#042c53" font-weight="700">Vector B ← I1 path</text>
+  <text x="290" y="883" text-anchor="middle" font-size="7.5" fill="#185fa5">Outcomes+Skills</text>
+  <text x="290" y="894" text-anchor="middle" font-size="7.5" fill="#378add">skill-gap precision</text>
+  <rect x="368" y="858" width="140" height="42" rx="4" fill="#ffffff" stroke="#5dcaa5" stroke-width="0.8"/>
+  <text x="438" y="872" text-anchor="middle" font-size="8" fill="#085041" font-weight="700">Vector C</text>
+  <text x="438" y="883" text-anchor="middle" font-size="7.5" fill="#0f6e56">Root / LearningItemId</text>
+  <text x="438" y="894" text-anchor="middle" font-size="7.5" fill="#1d9e75">sparse fallback</text>
+  <line x1="290" y1="910" x2="290" y2="922" stroke="#0f6e56" stroke-width="1.2" marker-end="url(#at)"/>
+
+  <rect x="60" y="922" width="460" height="28" rx="5" fill="#eeedfe" stroke="#afa9ec" stroke-width="0.8"/>
+  <text x="290" y="935" text-anchor="middle" font-size="8.5" fill="#3c3489" font-weight="600">Score fusion + dedup — group by learning_item_id · keep highest · match_reason = winning vector · ~10ms</text>
+  <text x="290" y="946" text-anchor="middle" font-size="8" fill="#534ab7">match_reason surfaces in the manager UI (why this course was recommended)</text>
+  <line x1="290" y1="950" x2="290" y2="962" stroke="#0f6e56" stroke-width="1.2" marker-end="url(#at)"/>
+
+  <rect x="60" y="962" width="460" height="34" rx="5" fill="#eeedfe" stroke="#534ab7" stroke-width="1"/>
+  <text x="290" y="976" text-anchor="middle" font-size="8.5" fill="#3c3489" font-weight="700">Dynamic 32K context assembly (I4 — shared by ALL agent calls)</text>
+  <text x="290" y="989" text-anchor="middle" font-size="8" fill="#534ab7">priority: system → query → mandatory → skill-gap → semantic · stop at 3,000 remaining</text>
+  <line x1="290" y1="996" x2="290" y2="1008" stroke="#0f6e56" stroke-width="1.2" marker-end="url(#at)"/>
+
+  <rect x="60" y="1008" width="460" height="30" rx="5" fill="#eeedfe" stroke="#afa9ec" stroke-width="0.8"/>
+  <text x="290" y="1021" text-anchor="middle" font-size="8.5" fill="#3c3489" font-weight="600">/orchestrator/rag/v1/internal-answer — grounded · cited LearningItemIds · 400–800ms</text>
+  <text x="290" y="1033" text-anchor="middle" font-size="8" fill="#534ab7">agents may stop at fusion output (retrieval-only) — generation optional per caller</text>
+
+  <rect x="60" y="1050" width="460" height="34" rx="5" fill="#f1efe8" stroke="#b4b2a9" stroke-width="0.8"/>
+  <text x="290" y="1064" text-anchor="middle" font-size="8.5" fill="#2c2c2a" font-weight="700">Ranked results → HCM Learning Cloud UI · AND → Course Recommender (I1) / Analyzer (I2)</text>
+  <text x="290" y="1077" text-anchor="middle" font-size="8" fill="#5f5e5a">one pipeline, two consumers: learners and agents</text>
+
+  <!-- OFFLINE INGESTION (right column) -->
+  <rect x="560" y="678" width="500" height="420" rx="8" fill="#ffffff" stroke="#5dcaa5" stroke-width="1"/>
+  <text x="810" y="697" text-anchor="middle" font-size="9.5" fill="#085041" font-weight="700">OFFLINE INGESTION — ESS BATCH · repeats per catalog item</text>
+
+  <rect x="580" y="708" width="460" height="30" rx="5" fill="#f1efe8" stroke="#b4b2a9" stroke-width="0.8"/>
+  <text x="810" y="721" text-anchor="middle" font-size="8.5" fill="#2c2c2a" font-weight="600">ESS job → GET /hcmRestApi/learningItems?Status=ORA_ACTIVE&amp;limit=500&amp;expand=syllabus,outcomes</text>
+  <text x="810" y="733" text-anchor="middle" font-size="8" fill="#5f5e5a">raw item: LearningItemId · Title · Description · Syllabus · Outcomes · Prerequisites · OrgId</text>
+  <line x1="810" y1="738" x2="810" y2="750" stroke="#0f6e56" stroke-width="1.2" marker-end="url(#at)"/>
+
+  <rect x="580" y="750" width="460" height="42" rx="5" fill="#eeedfe" stroke="#534ab7" stroke-width="0.8"/>
+  <text x="810" y="764" text-anchor="middle" font-size="8.5" fill="#3c3489" font-weight="700">LLM enrichment — POST /orchestrator/rag/v1/internal-summaries</text>
+  <text x="810" y="776" text-anchor="middle" font-size="8" fill="#534ab7">system: org industry profile · out: expandedTitle · summary · skills[] · keywords[] · jobRoles[]</text>
+  <text x="810" y="787" text-anchor="middle" font-size="8" fill="#534ab7">llm_inferred flagged in metadata — enriched claims distinguishable from source-of-truth</text>
+  <line x1="810" y1="792" x2="810" y2="804" stroke="#0f6e56" stroke-width="1.2" marker-end="url(#at)"/>
+
+  <rect x="580" y="804" width="460" height="34" rx="5" fill="#eeedfe" stroke="#afa9ec" stroke-width="0.8"/>
+  <text x="810" y="818" text-anchor="middle" font-size="8.5" fill="#3c3489" font-weight="600">Content-based semantic chunking — boundaries at meaning changes, not word count</text>
+  <text x="810" y="830" text-anchor="middle" font-size="8" fill="#534ab7">Vector A: Title+Desc+Syllabus · Vector B: Outcomes/Skills · Vector C: Root</text>
+  <line x1="810" y1="838" x2="810" y2="850" stroke="#0f6e56" stroke-width="1.2" marker-end="url(#at)"/>
+
+  <rect x="580" y="850" width="460" height="28" rx="5" fill="#e1f5ee" stroke="#5dcaa5" stroke-width="0.8"/>
+  <text x="810" y="863" text-anchor="middle" font-size="8.5" fill="#085041" font-weight="600">Embedding — once per chunk → 1,536-dim · SAME model as query time (non-negotiable)</text>
+  <text x="810" y="874" text-anchor="middle" font-size="8" fill="#0f6e56">/orchestrator/llm/v1/internal-embeddings</text>
+  <line x1="810" y1="878" x2="810" y2="890" stroke="#0f6e56" stroke-width="1.2" marker-end="url(#at)"/>
+
+  <rect x="580" y="890" width="460" height="40" rx="5" fill="#e1f5ee" stroke="#1d9e75" stroke-width="1"/>
+  <text x="810" y="904" text-anchor="middle" font-size="8.5" fill="#085041" font-weight="700">Vector DB upsert — key: chunk_id (idempotent, replace on re-run)</text>
+  <text x="810" y="916" text-anchor="middle" font-size="8" fill="#0f6e56">metadata: learning_item_id · org_id (I3) · vector_type · semantic_section · llm_inferred · model_version (I5)</text>
+  <text x="810" y="926" text-anchor="middle" font-size="8" fill="#1d9e75">Oracle 23ai AI Vector Search — vectors + HCM transactional data, one RBAC boundary</text>
+
+  <rect x="580" y="942" width="460" height="40" rx="5" fill="#e1f5ee" stroke="#5dcaa5" stroke-width="0.8"/>
+  <text x="810" y="956" text-anchor="middle" font-size="8.5" fill="#085041" font-weight="700">Delta runs — LastUpdateDate &gt; last_run_ts · only changed items re-enriched/re-embedded</text>
+  <text x="810" y="968" text-anchor="middle" font-size="8" fill="#0f6e56">enrichment content-hash cache kills ~95% of /internal-summaries calls on deltas</text>
+  <text x="810" y="978" text-anchor="middle" font-size="8" fill="#1d9e75">deactivated courses → vectors DELETED (Recommender can never surface retired content)</text>
+
+  <rect x="580" y="994" width="460" height="90" rx="5" fill="#fcebeb" stroke="#f09595" stroke-width="1"/>
+  <text x="810" y="1010" text-anchor="middle" font-size="8.5" fill="#791f1f" font-weight="700">FAILURE HANDLING (production-hardened)</text>
+  <text x="810" y="1024" text-anchor="middle" font-size="8" fill="#a32d2d">enrich fails → dead-letter queue · 429 → exponential backoff</text>
+  <text x="810" y="1037" text-anchor="middle" font-size="8" fill="#a32d2d">job interrupted → checkpoint offset resume</text>
+  <text x="810" y="1050" text-anchor="middle" font-size="8" fill="#a32d2d">model upgrade → BLUE-GREEN vector migration (P8 for embeddings — I5)</text>
+  <text x="810" y="1066" text-anchor="middle" font-size="8" fill="#791f1f" font-weight="600">the harness's dead-letter + checkpoint patterns the agent layer inherits</text>
+
+  <!-- cross-arrows within substrate -->
+  <path d="M580 910 L540 910 L540 866 L520 866" stroke="#0f6e56" stroke-width="1" fill="none" stroke-dasharray="3 2" marker-end="url(#at)"/>
+  <text x="550" y="856" text-anchor="middle" font-size="7.5" fill="#0f6e56">index serves ANN</text>
+
+  <!-- shared services strip -->
+  <rect x="40" y="1108" width="1020" height="46" rx="7" fill="#e6f1fb" stroke="#185fa5" stroke-width="1.5"/>
+  <text x="550" y="1125" text-anchor="middle" font-size="9" fill="#0c447c" font-weight="700">SHARED SERVICES — 04 AI GATEWAY (OCI): auth vault · routing · quotas · 32k input cap · semantic cache · token logs</text>
+  <text x="550" y="1140" text-anchor="middle" font-size="8.5" fill="#185fa5">One gateway fronts BOTH systems: agent LLM calls + /internal-summaries + /internal-embeddings + /internal-answer · P8 eval-gate + canary on every routing change</text>
+
+  <!-- observability strip -->
+  <rect x="40" y="1166" width="1020" height="44" rx="7" fill="#f1efe8" stroke="#888780" stroke-width="1.2"/>
+  <text x="550" y="1183" text-anchor="middle" font-size="9" fill="#2c2c2a" font-weight="700">06 EVALS + 08 OBSERVABILITY — one dashboard, two systems</text>
+  <text x="550" y="1198" text-anchor="middle" font-size="8.5" fill="#5f5e5a">agent: retry/timeout/dispute/fairness rates · RAG: cache hit %, ANN p95, fusion quality, ingest dead-letter depth · shared: tokens, cost-per-run, model_version drift</text>
+
+  <!-- Oracle strip -->
+  <rect x="40" y="1222" width="1020" height="30" rx="6" fill="#ffffff" stroke="#c74634" stroke-width="1"/>
+  <text x="550" y="1235" text-anchor="middle" font-size="8.5" fill="#c74634" font-weight="700">ORACLE-NATIVE END TO END: AI Agent Studio · Fusion HCM RBAC · HCM REST v4 · Learning Cloud · Business Object Tool · ESS · ONS · Oracle 23ai Vector Search · OCI IAM · OCI API Gateway</text>
+  <text x="550" y="1246" text-anchor="middle" font-size="8" fill="#993c1d">RAG substrate exposed to Agent Studio as: Document Tool replacement + MCP tool endpoint — agents consume it exactly like any other governed tool</text>
+
+  <!-- LEGEND -->
+  <rect x="40" y="1264" width="1020" height="52" rx="5" fill="#ffffff" stroke="#e0ddd8" stroke-width="0.5"/>
+  <rect x="55" y="1276" width="10" height="10" rx="2" fill="#d85a30"/>
+  <text x="69" y="1285" font-size="9" fill="#2c2c2a">Agentic layer (harness)</text>
+  <rect x="205" y="1276" width="10" height="10" rx="2" fill="#0f6e56"/>
+  <text x="219" y="1285" font-size="9" fill="#2c2c2a">RAG retrieval substrate (your prior build)</text>
+  <rect x="455" y="1276" width="10" height="10" rx="2" fill="#ba7517"/>
+  <text x="469" y="1285" font-size="9" fill="#2c2c2a">Integration seam I1–I5</text>
+  <rect x="620" y="1276" width="10" height="10" rx="2" fill="#d4537e"/>
+  <text x="634" y="1285" font-size="9" fill="#2c2c2a">P1–P8 person guards</text>
+  <rect x="790" y="1276" width="10" height="10" rx="2" fill="#185fa5"/>
+  <text x="804" y="1285" font-size="9" fill="#2c2c2a">Shared gateway + LLMs</text>
+  <rect x="55" y="1294" width="10" height="10" rx="2" fill="#a32d2d"/>
+  <text x="69" y="1303" font-size="9" fill="#2c2c2a">System guardrails + failure handling</text>
+  <rect x="300" y="1294" width="10" height="10" rx="2" fill="#eeedfe" stroke="#534ab7" stroke-width="1"/>
+  <text x="314" y="1303" font-size="9" fill="#2c2c2a">LLM-powered stages</text>
+
+  <text x="550" y="1350" text-anchor="middle" font-size="10" fill="#0f6e56" font-weight="700">v6 thesis: a mature RAG system becomes a TOOL that agents orchestrate — retrieval as substrate, agency as the layer above</text>
+  <text x="550" y="1372" text-anchor="middle" font-size="9" fill="#888780">Two systems, one seam, one gateway, one observability plane · Reference architecture · diagrams are original work · Oracle marks are trademarks of Oracle Corporation</text>
+</svg>
