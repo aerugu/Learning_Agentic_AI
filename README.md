@@ -202,6 +202,12 @@ docker compose up
 
 ## Test And Validate
 
+Build the Python backend:
+
+```bash
+pnpm run build:backend
+```
+
 Run lint:
 
 ```bash
@@ -218,6 +224,30 @@ Run tests:
 
 ```bash
 pnpm test
+```
+
+Run unit tests only:
+
+```bash
+pnpm run test:unit
+```
+
+Run functional tests against a running Docker Compose stack:
+
+```bash
+pnpm run test:functional
+```
+
+Publish coverage artifacts:
+
+```bash
+pnpm run coverage
+```
+
+Validate Docker Compose configuration:
+
+```bash
+pnpm run validate:compose
 ```
 
 The test suite builds the app, validates the server-rendered React HTML, and runs Python backend unit tests. It checks that the app includes:

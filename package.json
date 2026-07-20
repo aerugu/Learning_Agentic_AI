@@ -7,9 +7,15 @@
   },
   "scripts": {
     "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext dev",
+    "build:backend": "PYTHONPYCACHEPREFIX=.pycache python3 -m compileall -q backend",
     "build": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext build",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
     "test": "vinext build && node --test tests/rendered-html.test.mjs && PYTHONPATH=backend python3 -m unittest discover -s backend/tests",
+    "test:unit": "PYTHONPATH=backend python3 -m unittest discover -s backend/tests",
+    "test:functional": "node scripts/functional-smoke.mjs",
+    "coverage": "node scripts/publish-coverage.mjs",
+    "validate:compose": "docker compose config --quiet",
+    "validate:release": "pnpm run build:backend && pnpm run build && pnpm run test:unit && pnpm test && pnpm run validate:compose",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate"
   },
